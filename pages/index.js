@@ -1,44 +1,10 @@
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
-import React from "react";
+import React, { useEffect, useState } from "react";
+// Hooks (ganchos) do roteamento
 import { useRouter } from "next/router";
 import appConfig from "../pages/config.json";
 
-//Cria os estilos globais da aplicação
-function GlobalStyle() {
-  return (
-    <style global jsx>
-      {`
-        * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-          list-style: none;
-        }
-        body {
-          font-family: "Open Sans", sans-serif;
-        }
-        /* App fit Height */
-        html,
-        body,
-        #__next {
-          min-height: 100vh;
-          display: flex;
-          flex: 1;
-        }
-        #__next {
-          flex: 1;
-        }
-        #__next > * {
-          flex: 1;
-        }
-        /* ./App fit Height */
-      `}
-    </style>
-  );
-}
-
 function Titulo(props) {
-  console.log(props);
   const Tag = props.tag || "h1";
   return (
     // Tag vazia para agrupar estilos
@@ -75,11 +41,23 @@ function Titulo(props) {
 export default function PaginaInicial() {
   // const username = 'omariosouto';
   const [username, setUsername] = React.useState("Valmir1227");
+  //State  do react (2) ['', ƒ()] o segundo argumento é uma função
   const roteamento = useRouter();
+  console.log(roteamento);
+
+  // VALIDÇÃO DE LOGIN
+  //function getUserInfo() {
+  //const url = `https://api.github.com/users/${username}`;
+  //fetch(url)
+  //.then((response) => response.json())
+  //.then((userr) => {
+  // console.log(userr);
+  //});
+  ///}
+  //getUserInfo();
 
   return (
     <>
-      <GlobalStyle />
       <Box
         styleSheet={{
           display: "flex",
@@ -89,6 +67,7 @@ export default function PaginaInicial() {
             "url(https://images4.alphacoders.com/116/1163349.png)",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
       >
         <Box
@@ -112,9 +91,8 @@ export default function PaginaInicial() {
             as="form"
             onSubmit={function (infosDoEvento) {
               infosDoEvento.preventDefault();
-              console.log("Alguém submeteu o form");
+              //2 Maneiras de mudar a página => // window.location.href = '/chat' | |
               roteamento.push("/chat");
-              // window.location.href = '/chat';
             }}
             styleSheet={{
               display: "flex",
@@ -152,12 +130,13 @@ export default function PaginaInicial() {
             <TextField
               value={username}
               onChange={function (event) {
-                console.log("usuario digitou", event.target.value);
+                console.log(event);
+
                 // Onde ta o valor?
                 const valor = event.target.value;
                 // Trocar o valor da variavel
-                // através do React e avise quem precisa
                 setUsername(valor);
+                // através do React e avise quem precisa
               }}
               fullWidth
               textFieldColors={{
@@ -220,6 +199,19 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
+
+            {/*<Text
+            variant="body4"
+            styleSheet={{
+              color: appConfig.theme.colors.neutrals[200],
+              backgroundColor: appConfig.theme.colors.neutrals[900],
+              padding: "3px 10px",
+              borderRadius: "1000px",
+            }}
+          >
+            Valor
+          </Text>
+          */}
           </Box>
           {/* Photo Area */}
         </Box>
