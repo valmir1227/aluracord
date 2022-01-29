@@ -45,17 +45,6 @@ export default function PaginaInicial() {
   const roteamento = useRouter();
   console.log(roteamento);
 
-  // VALIDÇÃO DE LOGIN
-  //function getUserInfo() {
-  //const url = `https://api.github.com/users/${username}`;
-  //fetch(url)
-  //.then((response) => response.json())
-  //.then((userr) => {
-  // console.log(userr);
-  //});
-  ///}
-  //getUserInfo();
-
   return (
     <>
       <Box
@@ -199,19 +188,6 @@ export default function PaginaInicial() {
             >
               {username}
             </Text>
-
-            {/*<Text
-            variant="body4"
-            styleSheet={{
-              color: appConfig.theme.colors.neutrals[200],
-              backgroundColor: appConfig.theme.colors.neutrals[900],
-              padding: "3px 10px",
-              borderRadius: "1000px",
-            }}
-          >
-            Valor
-          </Text>
-          */}
           </Box>
           {/* Photo Area */}
         </Box>

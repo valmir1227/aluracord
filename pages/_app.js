@@ -27,13 +27,22 @@ function GlobalStyle() {
           flex: 1;
         }
         /* ./App fit Height */
+
+        html {
+          overflow: scroll;
+          overflow-x: hidden;
+        }
+        ::-webkit-scrollbar {
+          width: 0px; /* Remove scrollbar space */
+          background: transparent; /* Optional: just make scrollbar invisible */
+        }
       `}
     </style>
   );
 }
 
 export default function MyApp({ Component, pageProps }) {
- // console.log("Roda em todas as páginas!");
+  // console.log("Roda em todas as páginas!");
   return (
     <>
       <GlobalStyle />

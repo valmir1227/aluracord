@@ -1,20 +1,54 @@
 import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import React from "react";
 import appConfig from "../pages/config.json";
+import { createClient } from "@supabase/supabase-js";
+
+const SUPABASE_ANON_KAY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ4NTM3MSwiZXhwIjoxOTU5MDYxMzcxfQ.iYg_rrQfYqI387z5XATAL9w7qeHoFIKcbojSwpasyoU";
+const SUPABASE_URL = "https://mdpytqdzxmlvabxjsszi.supabase.co";
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KAY);
 
 export default function ChatPage() {
-  // Sua lógica vai aqui
+  /* 
+  (!) Usuário(a)
+  - Usuário digita no campo textarea  
+  - Aperta enter para enviar
+  - Tem que adicionar o texto na listagem
+
+  (!) Dev
+  - Criar campo
+  - Usar onchage e usestate (if  para limpar variável)
+  - Lista de mensagem
+*/
+
   const [mensagem, setMensagem] = React.useState("");
   const [listaDeMensagem, setListaDeMensagens] = React.useState([]);
-  // ./Sua lógica vai aqui
+
+  React.useEffect(() => {
+    supabaseClient
+      .from("Mensagens")
+      .select("*")
+      .order("id", { ascending: false })
+      .then(({ data }) => {
+        setListaDeMensagens(data);
+      });
+  }, []);
+
   function handleNovaMensagem(novaMensagem) {
     const mensagem = {
-      id: listaDeMensagem.length + 1,
-      de: "Valmir",
+      //  id: listaDeMensagem.length + 1,
+      de: "valmir",
       texto: novaMensagem,
     };
 
-    setListaDeMensagens([...listaDeMensagem, mensagem]);
+    supabaseClient
+      .from("Mensagens")
+      .insert([mensagem])
+      .then(({ data }) => {
+        setListaDeMensagens([data[0], ...listaDeMensagem]);
+      });
+
+    //  setListaDeMensagens([mensagem, ...listaDeMensagem]);
   }
 
   return (
@@ -39,11 +73,17 @@ export default function ChatPage() {
           flex: 1,
           boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
           borderRadius: "5px",
-          backgroundColor: appConfig.theme.colors.neutrals[700],
+
+          background: "rgba(199, 159, 67, 0.3)",
+          boxshadow: "0 4px 30px rgba(0, 0, 0, 0)",
+          backdropfilter: "blur(3.3px)",
+          border: "1px solid rgba(199, 159, 67,1)",
+
           height: "100%",
-          maxWidth: "95%",
+          maxWidth: "75%",
           maxHeight: "95vh",
           padding: "32px",
+          overflow: "hidden",
         }}
       >
         <Header />
@@ -51,22 +91,26 @@ export default function ChatPage() {
           styleSheet={{
             position: "relative",
             display: "flex",
+            justifyContent: "flex-end",
+            border: "1px solid rgba(199, 159, 67,1)",
             flex: 1,
             height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals[600],
+            backgroundColor: appConfig.theme.colors.neutrals[900],
             flexDirection: "column",
             borderRadius: "5px",
             padding: "16px",
           }}
         >
-          {/*<MessageList mensagens={[]} /> */}
-          {listaDeMensagem.map((mensagemAtual) => {
+          <MessageList mensagem={listaDeMensagem} />
+
+          {/*{listaDeMensagem.map((mensagemAtual) => {
             return (
               <li key={mensagemAtual.id}>
                 {mensagemAtual.de}: {mensagemAtual.texto}
               </li>
             );
-          })}
+          })} */}
+
           <Box
             as="form"
             styleSheet={{
@@ -82,9 +126,11 @@ export default function ChatPage() {
               }}
               onKeyPress={(event) => {
                 if (event.key === "Enter") {
-                  handleNovaMensagem(mensagem);
-                  event.preventDefault();
-                  setMensagem("");
+                  if (mensagem != "" && mensagem != "\n" * 1) {
+                    handleNovaMensagem(mensagem);
+                    event.preventDefault();
+                    setMensagem("");
+                  }
                 }
               }}
               placeholder="Insira sua mensagem aqui..."
@@ -94,12 +140,36 @@ export default function ChatPage() {
                 border: "0",
                 resize: "none",
                 borderRadius: "5px",
-                padding: "6px 8px",
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: "12px",
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
+
+            <Box>
+              <Button
+                onClick={(event) => {
+                  if (mensagem != "") {
+                    handleNovaMensagem(mensagem);
+                    event.preventDefault();
+                    setMensagem("");
+                  }
+                }}
+                type="button"
+                label="Enviar"
+                fullWidth
+                buttonColors={{
+                  contrastColor: appConfig.theme.colors.neutrals["000"],
+                  mainColor: appConfig.theme.colors.primary[900],
+                  mainColorLight: appConfig.theme.colors.primary[400],
+                  mainColorStrong: appConfig.theme.colors.primary[800],
+                }}
+                styleSheet={{
+                  marginTop: "-10%",
+                  padding: "13px",
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -122,7 +192,7 @@ function Header() {
         <Text variant="heading5">Chat</Text>
         <Button
           variant="tertiary"
-          colorVariant="neutral"
+          colorVariant="dark"
           label="Logout"
           href="/"
         />
@@ -132,12 +202,12 @@ function Header() {
 }
 
 function MessageList(props) {
-  console.log(props.listaDeMensagem);
   return (
     <Box
       tag="ul"
       styleSheet={{
-        overflow: "scroll",
+        overflow: "auto",
+
         display: "flex",
         flexDirection: "column-reverse",
         flex: 1,
@@ -145,47 +215,51 @@ function MessageList(props) {
         marginBottom: "16px",
       }}
     >
-      <Text
-        key={mensagem.id}
-        tag="li"
-        styleSheet={{
-          borderRadius: "5px",
-          padding: "6px",
-          marginBottom: "12px",
-          hover: {
-            backgroundColor: appConfig.theme.colors.neutrals[700],
-          },
-        }}
-      >
-        <Box
-          styleSheet={{
-            marginBottom: "8px",
-          }}
-        >
-          <Image
-            styleSheet={{
-              width: "20px",
-              height: "20px",
-              borderRadius: "50%",
-              display: "inline-block",
-              marginRight: "8px",
-            }}
-            src={`https://github.com/vanessametonini.png`}
-          />
-          <Text tag="strong">{mensagem.de}</Text>
+      {props.mensagem.map((mensagem) => {
+        return (
           <Text
+            key={mensagem.id}
+            tag="li"
             styleSheet={{
-              fontSize: "10px",
-              marginLeft: "8px",
-              color: appConfig.theme.colors.neutrals[300],
+              borderRadius: "5px",
+              padding: "6px",
+              marginBottom: "12px",
+              hover: {
+                backgroundColor: appConfig.theme.colors.neutrals[700],
+              },
             }}
-            tag="span"
           >
-            {new Date().toLocaleDateString()}
+            <Box
+              styleSheet={{
+                marginBottom: "8px",
+              }}
+            >
+              <Image
+                styleSheet={{
+                  width: "20px",
+                  height: "20px",
+                  borderRadius: "50%",
+                  display: "inline-block",
+                  marginRight: "8px",
+                }}
+                src={`https://github.com/${mensagem.de}.png`}
+              />
+              <Text tag="strong">{mensagem.de}</Text>
+              <Text
+                styleSheet={{
+                  fontSize: "10px",
+                  marginLeft: "1px",
+                  color: appConfig.theme.colors.neutrals[300],
+                }}
+                tag="span"
+              >
+                {new Date().toLocaleDateString()}
+              </Text>
+            </Box>
+            {mensagem.texto}
           </Text>
-        </Box>
-        {mensagem.texto}
-      </Text>
+        );
+      })}
     </Box>
   );
 }
