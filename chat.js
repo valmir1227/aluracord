@@ -103,9 +103,11 @@ export default function ChatPage() {
               }}
               onKeyPress={(event) => {
                 if (event.key === "Enter") {
-                  handleNovaMensagem(mensagem);
-                  event.preventDefault();
-                  setMensagem("");
+                  if (mensagem != "" && mensagem != "\n" * 1) {
+                    handleNovaMensagem(mensagem);
+                    event.preventDefault();
+                    setMensagem("");
+                  }
                 }
               }}
               placeholder="Insira sua mensagem aqui..."
@@ -115,12 +117,35 @@ export default function ChatPage() {
                 border: "0",
                 resize: "none",
                 borderRadius: "5px",
-                padding: "6px 8px",
                 backgroundColor: appConfig.theme.colors.neutrals[800],
                 marginRight: "12px",
                 color: appConfig.theme.colors.neutrals[200],
               }}
             />
+            <Box>
+              <Button
+                onClick={(event) => {
+                  if (mensagem != "") {
+                    handleNovaMensagem(mensagem);
+                    event.preventDefault();
+                    setMensagem("");
+                  }
+                }}
+                type="button"
+                label="Enviar"
+                fullWidth
+                buttonColors={{
+                  contrastColor: appConfig.theme.colors.neutrals["000"],
+                  mainColor: appConfig.theme.colors.primary[900],
+                  mainColorLight: appConfig.theme.colors.primary[400],
+                  mainColorStrong: appConfig.theme.colors.primary[800],
+                }}
+                styleSheet={{
+                  marginTop: "-10%",
+                  padding: "13px",
+                }}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
@@ -199,7 +224,7 @@ function MessageList(props) {
               <Text
                 styleSheet={{
                   fontSize: "10px",
-                  marginLeft: "8px",
+                  marginLeft: "1px",
                   color: appConfig.theme.colors.neutrals[300],
                 }}
                 tag="span"
