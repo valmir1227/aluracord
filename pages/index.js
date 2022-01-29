@@ -41,6 +41,7 @@ function Titulo(props) {
 export default function PaginaInicial() {
   // const username = 'omariosouto';
   const [username, setUsername] = React.useState("Valmir1227");
+
   //State  do react (2) ['', ƒ()] o segundo argumento é uma função
   const roteamento = useRouter();
   console.log(roteamento);
@@ -93,7 +94,7 @@ export default function PaginaInicial() {
               marginBottom: "32px",
             }}
           >
-            <Titulo Tag="h2">Bem vindo ao seu Aluracord</Titulo>
+            <Titulo Tag="h2">Bem vindo ao Aluracord</Titulo>
             <Text
               variant="body3"
               styleSheet={{
@@ -119,8 +120,6 @@ export default function PaginaInicial() {
             <TextField
               value={username}
               onChange={function (event) {
-                console.log(event);
-
                 // Onde ta o valor?
                 const valor = event.target.value;
                 // Trocar o valor da variavel

@@ -1,4 +1,11 @@
-import { Box, Text, TextField, Image, Button } from "@skynexui/components";
+import {
+  Box,
+  Text,
+  TextField,
+  Image,
+  Button,
+  Icon,
+} from "@skynexui/components";
 import React from "react";
 import appConfig from "../pages/config.json";
 import { createClient } from "@supabase/supabase-js";
@@ -37,7 +44,7 @@ export default function ChatPage() {
   function handleNovaMensagem(novaMensagem) {
     const mensagem = {
       //  id: listaDeMensagem.length + 1,
-      de: "valmir",
+      de: "Lua",
       texto: novaMensagem,
     };
 
