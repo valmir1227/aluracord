@@ -1,8 +1,8 @@
+import appConfig from "../pages/config.json";
 import { Box, Button, Text, TextField, Image } from "@skynexui/components";
 import React, { useEffect, useState } from "react";
 // Hooks (ganchos) do roteamento
 import { useRouter } from "next/router";
-import appConfig from "../pages/config.json";
 
 function Titulo(props) {
   const Tag = props.tag || "h1";
@@ -40,11 +40,14 @@ function Titulo(props) {
 //export default HomePage;
 export default function PaginaInicial() {
   // const username = 'omariosouto';
-  const [username, setUsername] = React.useState("Valmir1227");
+  const [username, setUsername] = React.useState("");
 
   //State  do react (2) ['', ƒ()] o segundo argumento é uma função
   const roteamento = useRouter();
-  console.log(roteamento);
+
+  if (username.length > 2) {
+    fetch(`https://api.github.com/users/${username}`).then((res) => res.json());
+  }
 
   return (
     <>
@@ -82,7 +85,7 @@ export default function PaginaInicial() {
             onSubmit={function (infosDoEvento) {
               infosDoEvento.preventDefault();
               //2 Maneiras de mudar a página => // window.location.href = '/chat' | |
-              roteamento.push("/chat");
+              roteamento.push(`/chat?username=${username}`);
             }}
             styleSheet={{
               display: "flex",
@@ -174,7 +177,11 @@ export default function PaginaInicial() {
                 borderRadius: "50%",
                 marginBottom: "16px",
               }}
-              src={`https://github.com/${username}.png`}
+              src={
+                username.length >= 3
+                  ? `https://github.com/${username}.png`
+                  : `https://images.unsplash.com/photo-1501430845499-9f39b78dd698?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OHx8Y2FsbXxlbnwwfDJ8MHx8&auto=format&fit=crop&w=500&q=60`
+              }
             />
             <Text
               variant="body4"

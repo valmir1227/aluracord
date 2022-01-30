@@ -1,35 +1,21 @@
-import {
-  Box,
-  Text,
-  TextField,
-  Image,
-  Button,
-  Icon,
-} from "@skynexui/components";
-import React from "react";
-import appConfig from "../pages/config.json";
+import { Box, Text, TextField, Image, Button } from "@skynexui/components";
 import { createClient } from "@supabase/supabase-js";
-
-const SUPABASE_ANON_KAY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ4NTM3MSwiZXhwIjoxOTU5MDYxMzcxfQ.iYg_rrQfYqI387z5XATAL9w7qeHoFIKcbojSwpasyoU";
-const SUPABASE_URL = "https://mdpytqdzxmlvabxjsszi.supabase.co";
-const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KAY);
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
+import appConfig from "../pages/config.json";
 
 export default function ChatPage() {
-  /* 
-  (!) Usuário(a)
-  - Usuário digita no campo textarea  
-  - Aperta enter para enviar
-  - Tem que adicionar o texto na listagem
+  const SUPABASE_ANON_KAY =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzQ4NTM3MSwiZXhwIjoxOTU5MDYxMzcxfQ.iYg_rrQfYqI387z5XATAL9w7qeHoFIKcbojSwpasyoU";
+  const SUPABASE_URL = "https://mdpytqdzxmlvabxjsszi.supabase.co";
+  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KAY);
 
-  (!) Dev
-  - Criar campo
-  - Usar onchage e usestate (if  para limpar variável)
-  - Lista de mensagem
-*/
-
-  const [mensagem, setMensagem] = React.useState("");
   const [listaDeMensagem, setListaDeMensagens] = React.useState([]);
+
+  const roteamento = useRouter();
+
+  const { username } = roteamento.query;
+  const [mensagem, setMensagem] = useState("");
 
   React.useEffect(() => {
     supabaseClient
@@ -44,7 +30,7 @@ export default function ChatPage() {
   function handleNovaMensagem(novaMensagem) {
     const mensagem = {
       //  id: listaDeMensagem.length + 1,
-      de: "Lua",
+      de: username,
       texto: novaMensagem,
     };
 
@@ -54,8 +40,6 @@ export default function ChatPage() {
       .then(({ data }) => {
         setListaDeMensagens([data[0], ...listaDeMensagem]);
       });
-
-    //  setListaDeMensagens([mensagem, ...listaDeMensagem]);
   }
 
   return (
@@ -110,14 +94,6 @@ export default function ChatPage() {
         >
           <MessageList mensagem={listaDeMensagem} />
 
-          {/*{listaDeMensagem.map((mensagemAtual) => {
-            return (
-              <li key={mensagemAtual.id}>
-                {mensagemAtual.de}: {mensagemAtual.texto}
-              </li>
-            );
-          })} */}
-
           <Box
             as="form"
             styleSheet={{
@@ -134,8 +110,8 @@ export default function ChatPage() {
               onKeyPress={(event) => {
                 if (event.key === "Enter") {
                   if (mensagem != "" && mensagem != "\n" * 1) {
-                    handleNovaMensagem(mensagem);
                     event.preventDefault();
+                    handleNovaMensagem(mensagem);
                     setMensagem("");
                   }
                 }
@@ -157,8 +133,8 @@ export default function ChatPage() {
               <Button
                 onClick={(event) => {
                   if (mensagem != "") {
-                    handleNovaMensagem(mensagem);
                     event.preventDefault();
+                    handleNovaMensagem(mensagem);
                     setMensagem("");
                   }
                 }}
