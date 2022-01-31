@@ -199,5 +199,5 @@ export default function PaginaInicial() {
         </Box>
       </Box>
     </>
-  );
+  )
 }
