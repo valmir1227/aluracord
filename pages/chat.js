@@ -102,7 +102,6 @@ export default function ChatPage() {
             border: "1px solid rgba(199, 159, 67,1)",
             flex: 1,
             height: "80%",
-            backgroundColor: appConfig.theme.colors.neutrals[900],
             flexDirection: "column",
             borderRadius: "5px",
             padding: "16px",
@@ -139,9 +138,9 @@ export default function ChatPage() {
                 border: "0",
                 resize: "none",
                 borderRadius: "5px",
-                backgroundColor: appConfig.theme.colors.neutrals[800],
+                backgroundColor: appConfig.theme.colors.primary[100],
                 marginRight: "12px",
-                color: appConfig.theme.colors.neutrals[200],
+                color: appConfig.theme.colors.neutrals[900],
               }}
             />
             {/*CallBack*/}
@@ -164,10 +163,10 @@ export default function ChatPage() {
                 label="Enviar"
                 fullWidth
                 buttonColors={{
-                  contrastColor: appConfig.theme.colors.neutrals["000"],
-                  mainColor: appConfig.theme.colors.primary[900],
+                  contrastColor: appConfig.theme.colors.neutrals[900],
+                  mainColor: appConfig.theme.colors.primary[100],
                   mainColorLight: appConfig.theme.colors.primary[400],
-                  mainColorStrong: appConfig.theme.colors.primary[800],
+                  mainColorStrong: appConfig.theme.colors.primary[100],
                 }}
                 styleSheet={{
                   marginTop: "-10%",
@@ -230,7 +229,7 @@ function MessageList(props) {
               padding: "6px",
               marginBottom: "12px",
               hover: {
-                backgroundColor: appConfig.theme.colors.neutrals[700],
+                backgroundColor: appConfig.theme.colors.primary[900],
               },
             }}
           >
@@ -262,7 +261,13 @@ function MessageList(props) {
               </Text>
             </Box>
             {mensagem.texto.startsWith(":sticker:") ? (
-              <Image src={mensagem.texto.replace(":sticker:", "")} />
+              <Image
+                src={mensagem.texto.replace(":sticker:", "")}
+                styleSheet={{
+                  width: "70px",
+                  height: "70px",
+                }}
+              />
             ) : (
               mensagem.texto
             )}

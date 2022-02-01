@@ -13,23 +13,20 @@ export function ButtonSendSticker(props) {
     >
       <Button
         styleSheet={{
-          borderRadius: "50%",
-          padding: "0 3px 0 0",
-          minWidth: "50px",
-          minHeight: "50px",
+          borderRadius: "4px",
+          minWidth: "45px",
+          minHeight: "45px",
           fontSize: "20px",
           marginBottom: "8px",
+          marginRight: "8px",
           lineHeight: "0",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: appConfig.theme.colors.neutrals[300],
-          filter: isOpen ? "grayscale(0)" : "grayscale(1)",
-          hover: {
-            filter: "grayscale(0)",
-          },
+          backgroundColor: appConfig.theme.colors.primary[100],
+          color:"back",
         }}
-        label="😋"
+        label="🕷"
         onClick={() => setOpenState(!isOpen)}
       />
       {/* IF do React */}
@@ -40,13 +37,13 @@ export function ButtonSendSticker(props) {
             flexDirection: "column",
             borderRadius: "5px",
             position: "absolute",
-            backgroundColor: appConfig.theme.colors.neutrals[800],
+            backgroundColor: appConfig.theme.colors.neutrals[500],
             width: {
               xs: "200px",
               sm: "290px",
             },
             height: "300px",
-            right: "30px",
+            right: "54px",
             bottom: "30px",
             padding: "16px",
             boxShadow:
@@ -88,10 +85,11 @@ export function ButtonSendSticker(props) {
                   borderRadius: "5px",
                   padding: "10px",
                   focus: {
-                    backgroundColor: appConfig.theme.colors.neutrals[600],
+                    backgroundColor: appConfig.theme.colors.neutrals[500],
                   },
                   hover: {
-                    backgroundColor: appConfig.theme.colors.neutrals[600],
+                    backgroundColor: appConfig.theme.colors.neutrals[100],
+                    cursor: "pointer",
                   },
                 }}
               >
