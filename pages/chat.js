@@ -12,11 +12,11 @@ const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KAY);
 
 function escutaMensagensEmTempoReal(adicionaMensagem) {
   return supabaseClient
-  .from("Mensagens")
-  .on("INSERT", (respostaLive) => {
-    adicionaMensagem(respostaLive.new);
-  })
-  .subscribe();
+    .from("Mensagens")
+    .on("INSERT", (respostaLive) => {
+      adicionaMensagem(respostaLive.new);
+    })
+    .subscribe();
 }
 
 export default function ChatPage() {
@@ -40,9 +40,6 @@ export default function ChatPage() {
         return [novaMensagem, ...valorAtualDaLista];
       });
     });
-    return () => {
-      subscription.unsubscribe();
-    };
   }, []);
 
   function handleNovaMensagem(novaMensagem) {
