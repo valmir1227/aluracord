@@ -31,7 +31,7 @@ export default function ChatPage() {
       .select("*")
       .order("id", { ascending: false })
       .then(({ data }) => {
-        console.log("CRIANDO MENSAGEM", data);
+        //console.log("CRIANDO MENSAGEM", data);
         setListaDeMensagens(data);
       });
 
@@ -53,7 +53,7 @@ export default function ChatPage() {
       .from("Mensagens")
       .insert([mensagem])
       .then(({ data }) => {
-        console.log("Criando mensagem", data);
+        //console.log("Criando mensagem", data);
       });
     setMensagem("");
   }
