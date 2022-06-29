@@ -18,7 +18,7 @@ npm install
 Ou
 
 ```
-yarn add [package]
+yarn 
 ```
 
 ## ☕ Para usar o AluraCord
